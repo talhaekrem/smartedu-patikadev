@@ -4,12 +4,23 @@ const app = express();
 
 const PORT = 3000;
 
+//Template engine
+app.set("view engine", "ejs");
+
+//Middlewares
+app.use(express.static("public"));
+
+//Routes
 app.get("/", (req, res) => {
-  res.send("INDEX...");
+  res.status(200).render("index", {
+    pageName: "index",
+  });
 });
 
-app.get("/abc", (req, res) => {
-  res.send("böyle sayfa tanımlı değil");
+app.get("/about", (req, res) => {
+  res.status(200).render("about", {
+    pageName: "about",
+  });
 });
 
 app.listen(PORT, () => {
