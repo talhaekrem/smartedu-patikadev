@@ -1,27 +1,30 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
-const app = express();
+const pageRoute = require("./routes/page.route");
+const courseRoute = require("./routes/course.route");
 
 const PORT = 3000;
+const app = express();
+
+//db connect
+mongoose
+  .connect("mongodb://localhost/smarteduDB")
+  .then(() => console.log("MongoDB Connected."))
+  .catch((err) => console.log("ERROR", err));
 
 //Template engine
 app.set("view engine", "ejs");
 
 //Middlewares
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+//app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 //Routes
-app.get("/", (req, res) => {
-  res.status(200).render("index", {
-    pageName: "index",
-  });
-});
-
-app.get("/about", (req, res) => {
-  res.status(200).render("about", {
-    pageName: "about",
-  });
-});
+app.use("/", pageRoute);
+app.use("/courses", courseRoute);
 
 app.listen(PORT, () => {
   console.log(`Uygulama ${PORT} portunda ayağa kaldırıldı...`);
