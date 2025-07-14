@@ -32,7 +32,23 @@ const coursesGetAll = async (req, res) => {
   }
 };
 
+const coursesGetById = async (req, res) => {
+  try {
+    const course = await Course.findOne({ slug: req.params.slug });
+    res.status(200).render("course", {
+      course,
+      pageName: "courses",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      response: error,
+    });
+  }
+};
+
 module.exports = {
   createCourse,
   coursesGetAll,
+  coursesGetById,
 };
