@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema({
-  name: { type: String, unique: true, require: true },
-  description: { type: String, require: true, trim: true },
+  name: { type: String, unique: true, required: true },
+  description: { type: String, required: true, trim: true },
   createDate: { type: Date, default: Date.now },
 });
 

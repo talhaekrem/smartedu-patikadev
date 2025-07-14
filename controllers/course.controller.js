@@ -17,6 +17,22 @@ const createCourse = async (req, res) => {
   }
 };
 
+const coursesGetAll = async (req, res) => {
+  try {
+    const courses = await Course.find();
+    res.status(200).render("courses", {
+      courses,
+      pageName: "courses",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      response: error,
+    });
+  }
+};
+
 module.exports = {
   createCourse,
+  coursesGetAll,
 };
