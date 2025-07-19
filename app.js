@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const pageRoute = require("./routes/page.route");
 const courseRoute = require("./routes/course.route");
+const categoryRoute = require("./routes/category.route");
 
 const PORT = 3000;
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.json());
 //Routes
 app.use("/", pageRoute);
 app.use("/courses", courseRoute);
+app.use("/categories", categoryRoute);
 
 app.listen(PORT, () => {
   console.log(`Uygulama ${PORT} portunda ayağa kaldırıldı...`);
