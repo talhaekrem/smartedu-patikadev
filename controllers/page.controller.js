@@ -10,7 +10,13 @@ const getHomePage = (req, res) => {
   });
 };
 
+const getRegisterPage = (req, res) => {
+  res.status(200).render("register", {
+    pageName: "register",
+  });
+};
 module.exports = {
   getAboutPage,
   getHomePage,
+  getRegisterPage,
 };
