@@ -2,23 +2,14 @@
 
 <div class="container">
   <div class="section-title text-center">
-    <h3 class="mt-5">REGISTER</h3>
+    <h3 class="mt-5">LOGIN</h3>
 
     <div class="row">
       <div class="col-xl-12 col-md-12 col-sm-12">
         <div class="contact_form">
           <div id="message"></div>
-          <form method="POST" action="/users/signup" name="contactform">
+          <form method="post" action="users/login">
             <div class="row row-fluid">
-              <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  class="form-control"
-                  placeholder="Name"
-                />
-              </div>
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
                 <input
                   type="email"
@@ -37,6 +28,7 @@
                   placeholder="Password"
                 />
               </div>
+
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
                 <button
                   type="submit"
@@ -44,7 +36,7 @@
                   id="submit"
                   class="btn btn-light btn-radius btn-brd grd1 btn-block"
                 >
-                  REGISTER
+                  LOGIN
                 </button>
               </div>
             </div>
@@ -58,6 +50,7 @@
   <!-- end container -->
 </div>
 <!-- end container -->
+
 <%- include('partials/_footer') %>
 <script src="js/timeline.min.js"></script>
 <script>

@@ -20,6 +20,39 @@ const createUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  let { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      bcrypt.compare(password, user.password, (err2, same) => {
+        if (same) {
+          res.status(200).json({
+            status: "success",
+            response: "OK",
+            user,
+          });
+        } else {
+          res.status(401).json({
+            status: "error",
+            response: "kullanıcı adı veya şifre yanlış",
+          });
+        }
+      });
+    } else {
+      res.status(401).json({
+        status: "error",
+        response: "kullanıcı adı veya şifre yanlış",
+      });
+    }
+  } catch (error) {
+    console.log("bura", error);
+    res.status(400).json({
+      status: "error",
+      response: error,
+    });
+  }
+};
 // const coursesGetAll = async (req, res) => {
 //   try {
 //     let categorySlug = req.query.category;
@@ -60,4 +93,5 @@ const createUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  loginUser,
 };
