@@ -27,11 +27,13 @@ const loginUser = async (req, res) => {
     if (user) {
       bcrypt.compare(password, user.password, (err2, same) => {
         if (same) {
-          res.status(200).json({
-            status: "success",
-            response: "OK",
-            user,
-          });
+          req.session.userId = user._id;
+          res.status(200).redirect("/");
+          // res.status(200).json({
+          //   status: "success",
+          //   response: "OK",
+          //   user,
+          // });
         } else {
           res.status(401).json({
             status: "error",

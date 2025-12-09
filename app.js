@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
 
 const pageRoute = require("./routes/page.route");
 const courseRoute = require("./routes/course.route");
@@ -18,13 +19,28 @@ mongoose
 //Template engine
 app.set("view engine", "ejs");
 
+//Global variables
+global.userIn = null;
+
 //Middlewares
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  session({
+    secret: "COK_gizli_BIR_keyY",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 //app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 //Routes
+app.use(/(.*)/, (req, res, next) => {
+  userIn = req.session.userId;
+  next();
+});
 app.use("/", pageRoute);
 app.use("/courses", courseRoute);
 app.use("/categories", categoryRoute);
