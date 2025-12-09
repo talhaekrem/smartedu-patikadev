@@ -55,6 +55,12 @@ const loginUser = async (req, res) => {
     });
   }
 };
+
+const logoutUser = async (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
+};
 // const coursesGetAll = async (req, res) => {
 //   try {
 //     let categorySlug = req.query.category;
@@ -96,4 +102,5 @@ const loginUser = async (req, res) => {
 module.exports = {
   createUser,
   loginUser,
+  logoutUser,
 };

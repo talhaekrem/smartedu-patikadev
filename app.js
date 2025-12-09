@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
+//routes
 const pageRoute = require("./routes/page.route");
 const courseRoute = require("./routes/course.route");
 const categoryRoute = require("./routes/category.route");
@@ -31,6 +33,9 @@ app.use(
     secret: "COK_gizli_BIR_keyY",
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.MongoStore.create({
+      mongoUrl: "mongodb://localhost/smarteduDB",
+    }),
   })
 );
 
