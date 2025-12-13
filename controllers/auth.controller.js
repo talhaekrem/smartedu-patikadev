@@ -48,7 +48,6 @@ const loginUser = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("bura", error);
     res.status(400).json({
       status: "error",
       response: error,
