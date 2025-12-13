@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
       bcrypt.compare(password, user.password, (err2, same) => {
         if (same) {
           req.session.userId = user._id;
-          res.status(200).redirect("/");
+          res.status(200).redirect("/users/dashboard");
           // res.status(200).json({
           //   status: "success",
           //   response: "OK",
@@ -59,6 +59,14 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
   req.session.destroy(() => {
     res.redirect("/");
+  });
+};
+
+const getDashboardPage = async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.status(200).render("dashboard", {
+    pageName: "dashboard",
+    user,
   });
 };
 // const coursesGetAll = async (req, res) => {
@@ -103,4 +111,5 @@ module.exports = {
   createUser,
   loginUser,
   logoutUser,
+  getDashboardPage,
 };
