@@ -6,12 +6,13 @@ const createUser = async (req, res) => {
   let { password, ...rest } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   try {
-    const user = await User.create({ ...rest, password: hashedPassword });
-    res.status(201).json({
-      status: "success",
-      response: "OK",
-      user,
-    });
+    await User.create({ ...rest, password: hashedPassword });
+    res.status(201).redirect("/login");
+    // res.status(201).json({
+    //   status: "success",
+    //   response: "OK",
+    //   user,
+    // });
   } catch (error) {
     res.status(400).json({
       status: "error",

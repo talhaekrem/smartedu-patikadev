@@ -7,6 +7,11 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     deletedFlag: { type: String, default: "N" },
+    role: {
+      type: String,
+      enum: ["student", "teacher", "admin"],
+      default: "student",
+    },
   },
   { timestamps: { createdAt: "createDate", updatedAt: "modifyDate" } }
 );
