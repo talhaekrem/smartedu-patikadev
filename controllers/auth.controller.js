@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Category = require("../models/Category");
+
 //const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
@@ -64,9 +66,11 @@ const logoutUser = async (req, res) => {
 
 const getDashboardPage = async (req, res) => {
   const user = await User.findById(req.session.userId);
+  const categories = await Category.find();
   res.status(200).render("dashboard", {
     pageName: "dashboard",
     user,
+    categories,
   });
 };
 // const coursesGetAll = async (req, res) => {
