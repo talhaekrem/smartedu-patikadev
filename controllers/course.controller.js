@@ -23,12 +23,24 @@ const createCourse = async (req, res) => {
 const coursesGetAll = async (req, res) => {
   try {
     let categorySlug = req.query.category;
-    let filter = {};
+    let searchWords = req.query.search;
+    let filter = { name: "", category: null };
     if (categorySlug) {
       const category = await Category.findOne({ slug: categorySlug });
       filter = { category: category._id };
     }
-    const courses = await Course.find(filter).sort({ createDate: -1 });
+
+    if (searchWords) {
+      filter = { name: searchWords };
+    }
+    const courses = await Course.find({
+      $or: [
+        { name: { $regex: ".*" + filter.name + ".*", $options: "i" } },
+        { category: filter.category },
+      ],
+    })
+      .populate("user")
+      .sort({ createDate: -1 });
     const categories = await Category.find();
     res.status(200).render("courses", {
       courses,
@@ -49,9 +61,12 @@ const coursesGetById = async (req, res) => {
       "user"
     );
     const user = await User.findById(req.session.userId);
+    const categories = await Category.find();
+
     res.status(200).render("course", {
       course,
       user,
+      categories,
       pageName: "courses",
     });
   } catch (error) {
