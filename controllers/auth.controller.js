@@ -66,14 +66,14 @@ const logoutUser = async (req, res) => {
 };
 
 const getDashboardPage = async (req, res) => {
-  const user = await User.findById(req.session.userId);
+  const user = await User.findById(req.session.userId).populate("courses");
   const categories = await Category.find();
   const courses = await Course.find({ user: req.session.userId });
   res.status(200).render("dashboard", {
     pageName: "dashboard",
     user,
     categories,
-    courses
+    courses,
   });
 };
 // const coursesGetAll = async (req, res) => {

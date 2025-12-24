@@ -8,5 +8,5 @@ router
   .post(checkRole(["teacher", "admin"]), courseController.createCourse);
 router.route("/").get(courseController.coursesGetAll);
 router.route("/:slug").get(courseController.coursesGetById);
-
+router.route("/enroll").post(courseController.enrollCourse);
 module.exports = router;

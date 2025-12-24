@@ -1,5 +1,6 @@
 const Category = require("../models/Category");
 const Course = require("../models/Course");
+const User = require("../models/User");
 //const mongoose = require("mongoose");
 
 const createCourse = async (req, res) => {
@@ -44,7 +45,9 @@ const coursesGetAll = async (req, res) => {
 
 const coursesGetById = async (req, res) => {
   try {
-    const course = await Course.findOne({ slug: req.params.slug }).populate('user');
+    const course = await Course.findOne({ slug: req.params.slug }).populate(
+      "user"
+    );
     res.status(200).render("course", {
       course,
       pageName: "courses",
@@ -57,8 +60,28 @@ const coursesGetById = async (req, res) => {
   }
 };
 
+const enrollCourse = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    await user.courses.push({ _id: req.body.courseId });
+    await user.save();
+    res.status(200).redirect("/users/dashboard");
+    // res.status(201).json({
+    //   status: "success",
+    //   response: "OK",
+    //   course,
+    // });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      response: error,
+    });
+  }
+};
+
 module.exports = {
   createCourse,
   coursesGetAll,
   coursesGetById,
+  enrollCourse,
 };
