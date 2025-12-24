@@ -4,7 +4,7 @@ const Course = require("../models/Course");
 
 const createCourse = async (req, res) => {
   try {
-    await Course.create(req.body);
+    await Course.create({ ...req.body, user: req.session.userId });
     res.status(201).redirect("/courses");
     // res.status(201).json({
     //   status: "success",
@@ -44,7 +44,7 @@ const coursesGetAll = async (req, res) => {
 
 const coursesGetById = async (req, res) => {
   try {
-    const course = await Course.findOne({ slug: req.params.slug });
+    const course = await Course.findOne({ slug: req.params.slug }).populate('user');
     res.status(200).render("course", {
       course,
       pageName: "courses",

@@ -3,6 +3,7 @@ const Category = require("../models/Category");
 
 //const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Course = require("../models/Course");
 
 const createUser = async (req, res) => {
   let { password, ...rest } = req.body;
@@ -67,10 +68,12 @@ const logoutUser = async (req, res) => {
 const getDashboardPage = async (req, res) => {
   const user = await User.findById(req.session.userId);
   const categories = await Category.find();
+  const courses = await Course.find({ user: req.session.userId });
   res.status(200).render("dashboard", {
     pageName: "dashboard",
     user,
     categories,
+    courses
   });
 };
 // const coursesGetAll = async (req, res) => {
