@@ -39,7 +39,8 @@ const getLoginPage = (req, res) => {
 };
 
 const sendEmail = async (req, res) => {
-  const htmlTemplate = `
+  try {
+    const htmlTemplate = `
   <h1>Message Details</h1>
   <ul>
     <li>Name: ${req.body.name}</li>
@@ -48,13 +49,18 @@ const sendEmail = async (req, res) => {
   <h2>Message</h2>
   <p>${req.body.message}</p>
   `;
-  await transporter.sendMail({
-    from: '"SmartEdu Contact Form" <example@example.com>', //mail gönderen kısmı
-    to: "example2@example2.com", //mailler kime gidecek
-    subject: "SmartEdu Contact Form New Message ✔",
-    html: htmlTemplate, // HTML version of the message
-  });
-  res.status(200).redirect("/contact");
+    await transporter.sendMail({
+      from: '"SmartEdu Contact Form" <example@example.com>', //mail gönderen kısmı
+      to: "example2@example2.com", //mailler kime gidecek
+      subject: "SmartEdu Contact Form New Message ✔",
+      html: htmlTemplate, // HTML version of the message
+    });
+    req.flash("success", "We received your message successfully!");
+    res.status(200).redirect("/contact");
+  } catch (error) {
+    req.flash("error", `Something happened! ${error}`);
+    res.status(200).redirect("/contact");
+  }
 };
 module.exports = {
   getAboutPage,
