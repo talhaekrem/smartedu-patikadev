@@ -107,10 +107,25 @@ const releaseCourse = async (req, res) => {
   }
 };
 
+const deleteCourse = async (req, res) => {
+  try {
+    const course = await Course.findOneAndDelete({ slug: req.params.slug });
+    await User.find({ courses: { $in: course } }).updateMany({
+      $pull: { courses: course._id },
+    });
+    req.flash("success", `Course has been deleted successfully!`);
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    req.flash("error", `Something happened!`);
+    res.status(400).redirect("/users/dashboard");
+  }
+};
+
 module.exports = {
   createCourse,
   coursesGetAll,
   coursesGetById,
   enrollCourse,
   releaseCourse,
+  deleteCourse,
 };

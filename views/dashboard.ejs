@@ -66,6 +66,13 @@ if(user) { %> <%if(user.role === 'student') { %>
 <div id="overviews" class="section wb">
   <div class="container">
     <div class="row">
+      <div class="col-lg-12 text-center mb-3">
+        <% if(flashMessages) { %> <% if(flashMessages.success) { %>
+        <div class="alert alert-success"><%= flashMessages.success %></div>
+        <%} else if(flashMessages.error) {%>
+        <div class="alert alert-danger"><%= flashMessages.error %></div>
+        <% } %> <%} %>
+      </div>
       <!-- Modal Button -->
       <div class="col-lg-12 text-center">
         <button
@@ -104,6 +111,21 @@ if(user) { %> <%if(user.role === 'student') { %>
             </div>
             <div class="course-desc">
               <p><%= courses[i].description%></p>
+            </div>
+            <div
+              class="d-flex flex-row justify-content-md-end justify-content-center align-items-center m-0"
+            >
+              <button class="btn btn-primary btn-rounded text-white mr-1">
+                <span>Update</span>
+              </button>
+
+              <a
+                href="/courses/<%= courses[i].slug %>?_method=DELETE"
+                onclick="deleteConfirm()"
+                class="btn btn-danger btn-rounded text-white ml-1"
+              >
+                <span>Delete</span>
+              </a>
             </div>
           </div>
         </div>
@@ -197,4 +219,11 @@ if(user) { %> <%if(user.role === 'student') { %>
   </div>
 </div>
 
+<script>
+  function deleteConfirm() {
+    if (!confirm("Course will be deleted. Are you sure?")) {
+      event.preventDefault();
+    }
+  }
+</script>
 <% } %> <% } %> <%- include('partials/_footer') %>
