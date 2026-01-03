@@ -4,6 +4,7 @@ const Category = require("../models/Category");
 //const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Course = require("../models/Course");
+const { validationResult } = require("express-validator");
 
 const createUser = async (req, res) => {
   let { password, ...rest } = req.body;
@@ -17,10 +18,12 @@ const createUser = async (req, res) => {
     //   user,
     // });
   } catch (error) {
-    res.status(400).json({
-      status: "error",
-      response: error,
-    });
+    const errors = validationResult(req);
+    for (let i = 0; i < errors.array().length; i++) {
+      req.flash("error", errors.array()[i].msg);
+    }
+
+    res.status(400).redirect("/register");
   }
 };
 
@@ -39,17 +42,13 @@ const loginUser = async (req, res) => {
           //   user,
           // });
         } else {
-          res.status(401).json({
-            status: "error",
-            response: "kullanıcı adı veya şifre yanlış",
-          });
+          req.flash("error", "Email or password is incorrect");
+          res.status(400).redirect("/login");
         }
       });
     } else {
-      res.status(401).json({
-        status: "error",
-        response: "kullanıcı adı veya şifre yanlış",
-      });
+      req.flash("error", "Email or password is incorrect");
+      res.status(400).redirect("/login");
     }
   } catch (error) {
     res.status(400).json({
