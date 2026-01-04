@@ -1,4 +1,7 @@
 const nodemailer = require("nodemailer");
+const Course = require("../models/Course");
+const User = require("../models/User");
+
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
@@ -15,9 +18,17 @@ const getAboutPage = (req, res) => {
   });
 };
 
-const getHomePage = (req, res) => {
+const getHomePage = async (req, res) => {
+  const courses = await Course.find().sort({ createdAt: -1 }).limit(2);
+  const courseCount = await Course.countDocuments();
+  const studentCount = await User.countDocuments({ role: "student" });
+  const teacherCount = await User.countDocuments({ role: "teacher" });
   res.status(200).render("index", {
     pageName: "index",
+    courses,
+    courseCount,
+    studentCount,
+    teacherCount,
   });
 };
 const getContactPage = (req, res) => {

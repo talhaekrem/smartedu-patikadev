@@ -343,6 +343,7 @@
     </div>
     <!-- end row -->
     <div class="row mt-5">
+      <h2>Users</h2>
       <table class="table">
         <thead>
           <tr>
@@ -366,8 +367,97 @@
       </table>
     </div>
     <!-- end row -->
+    <!-- end row -->
+    <div class="row mt-5">
+      <div class="d-flex justify-content-center align-items-center mb-2">
+        <h2 class="p-0">Categories</h2>
+        <button
+          class="btn btn-sm btn-success btn-rounded text-white ml-2"
+          data-toggle="modal"
+          data-target="#addCategory"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i = 0; i < categories.length; i++) { %>
+          <tr>
+            <th scope="row"><%= categories[i]._id %></th>
+            <td><%= categories[i].name %></td>
+            <td><a href="/categories/<%= categories[i]._id %>?_method=DELETE" 
+              class="btn btn-danger btn-rounded text-white ml-1" onclick="deleteConfirm('Category')">Delete</a></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <!-- end row -->
   </div>
   <!-- end container -->
+</div>
+<!-- ADD Modal -->
+<div
+  class="modal fade"
+  id="addCategory"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myCategoryModalLabel"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body customer-box">
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="Login">
+            <form method="POST" action="/categories" class="form-horizontal">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Category Name"
+                  />
+                </div>
+              </div>
+              <input
+                type="hidden"
+                name="role"
+                class="form-control"
+                value="<%= user.role %>"
+              />
+              <div class="row">
+                <div class="col-sm-10">
+                  <button
+                    type="submit"
+                    class="btn btn-light btn-radius btn-brd grd1"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-light btn-radius btn-brd grd1"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <% } %> 
 <% } %> 
