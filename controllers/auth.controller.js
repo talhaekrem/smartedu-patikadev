@@ -68,54 +68,34 @@ const getDashboardPage = async (req, res) => {
   const user = await User.findById(req.session.userId).populate("courses");
   const categories = await Category.find();
   const courses = await Course.find({ user: req.session.userId });
+  const users = await User.find();
   res.status(200).render("dashboard", {
     pageName: "dashboard",
     user,
     categories,
     courses,
+    users,
   });
 };
-// const coursesGetAll = async (req, res) => {
-//   try {
-//     let categorySlug = req.query.category;
-//     let filter = {};
-//     if (categorySlug) {
-//       const category = await Category.findOne({ slug: categorySlug });
-//       filter = { category: category._id };
-//     }
-//     const courses = await Course.find(filter);
-//     const categories = await Category.find();
-//     res.status(200).render("courses", {
-//       courses,
-//       categories,
-//       pageName: "courses",
-//     });
-//   } catch (error) {
-//     res.status(400).json({
-//       status: "error",
-//       response: error,
-//     });
-//   }
-// };
 
-// const coursesGetById = async (req, res) => {
-//   try {
-//     const course = await Course.findOne({ slug: req.params.slug });
-//     res.status(200).render("course", {
-//       course,
-//       pageName: "courses",
-//     });
-//   } catch (error) {
-//     res.status(400).json({
-//       status: "error",
-//       response: error,
-//     });
-//   }
-// };
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findOneAndDelete({ _id: req.params.id });
+    await Course.find({ user: { $in: user._id } }).deleteMany({
+      user: user._id,
+    });
+    req.flash("success", `User has been deleted successfully!`);
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    req.flash("error", `Something happened!`);
+    res.status(400).redirect("/users/dashboard");
+  }
+};
 
 module.exports = {
   createUser,
   loginUser,
   logoutUser,
   getDashboardPage,
+  deleteUser,
 };

@@ -1,5 +1,7 @@
-<%- include('partials/_header') %> <%- include('partials/_navigation') %> <%
-if(user) { %> <%if(user.role === 'student') { %>
+<%- include('partials/_header') %> 
+<%- include('partials/_navigation') %> 
+<%if(user) { %> 
+<%if(user.role === 'student') { %>
 <div class="all-title-box">
   <div class="container text-center">
     <h1><%= user.name %><span class="m_1">Student</span></h1>
@@ -57,7 +59,8 @@ if(user) { %> <%if(user.role === 'student') { %>
   </div>
   <!-- end container -->
 </div>
-<% } %> <% if(user.role === 'teacher') { %>
+<% } %> 
+<% if(user.role === 'teacher') { %>
 <div class="all-title-box">
   <div class="container text-center">
     <h1><%= user.name %><span class="m_1">Teacher</span></h1>
@@ -311,12 +314,68 @@ if(user) { %> <%if(user.role === 'student') { %>
     </div>
   </div>
 </div>
+<% } %>
+<%if(user.role === 'admin') { %>
+<div class="all-title-box">
+  <div class="container text-center">
+    <h1><%= user.name %><span class="m_1">Admin</span></h1>
+  </div>
+</div>
 
+<div id="overviews" class="section wb">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center mb-3">
+        <% if(flashMessages) { %> <% if(flashMessages.success) { %>
+        <div class="alert alert-success"><%= flashMessages.success %></div>
+        <%} else if(flashMessages.error) {%>
+        <div class="alert alert-danger"><%= flashMessages.error %></div>
+        <% } %> <%} %>
+      </div>
+      <div class="col-lg-12 blog-post-single">
+        <div class="blog-author">
+          <div class="author-bio">
+            <h3 class="author_name">Courses Enrolled By: <%= user.name %></h3>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+    <div class="row mt-5">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i = 0; i < users.length; i++) { %>
+          <tr>
+            <th scope="row"><%= users[i]._id %></th>
+            <td><%= users[i].email %></td>
+            <td><%= users[i].role %></td>
+            <td><a href="/users/<%= users[i]._id %>?_method=DELETE" 
+              class="btn btn-danger btn-rounded text-white ml-1" onclick="deleteConfirm('User')">Delete</a></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</div>
+<% } %> 
+<% } %> 
 <script>
-  function deleteConfirm() {
-    if (!confirm("Course will be deleted. Are you sure?")) {
+  function deleteConfirm(itemType = 'Course') {
+    if (!confirm(itemType + " will be deleted. Are you sure?")) {
       event.preventDefault();
     }
   }
 </script>
-<% } %> <% } %> <%- include('partials/_footer') %>
+<%- include('partials/_footer') %>
