@@ -121,6 +121,22 @@ const deleteCourse = async (req, res) => {
   }
 };
 
+const updateCourse = async (req, res) => {
+  try {
+    const course = await Course.findOne({ slug: req.params.slug });
+    course.name = req.body.name;
+    course.description = req.body.description;
+    course.category = req.body.category;
+    await course.save();
+
+    req.flash("success", `Course has been updated successfully!`);
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    console.log(error);
+    req.flash("error", `Something happened!`);
+    res.status(400).redirect("/users/dashboard");
+  }
+};
 module.exports = {
   createCourse,
   coursesGetAll,
@@ -128,4 +144,5 @@ module.exports = {
   enrollCourse,
   releaseCourse,
   deleteCourse,
+  updateCourse,
 };
